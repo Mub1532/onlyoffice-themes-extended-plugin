@@ -49,7 +49,14 @@
         "canvas-scroll-arrow-pressed": "#2f6fd6",
         "canvas-scroll-thumb-target": "#2f6fd6",
         "canvas-scroll-thumb-target-hover": "#2f6fd6",
-        "canvas-scroll-thumb-target-pressed": "#2f6fd6"
+        "canvas-scroll-thumb-target-pressed": "#2f6fd6",
+        "canvas-cell-title-border-hover": "#e3e9f6",
+        "canvas-cell-title-border-selected": "#cddcf7",
+        "canvas-dark-cell-title-hover": "#e3e9f6",
+        "canvas-dark-cell-title-selected": "#cddcf7",
+        "canvas-dark-cell-title-border-hover": "#e3e9f6",
+        "canvas-dark-cell-title-border-selected": "#cddcf7",
+        "canvas-select-all-icon": "#2f6fd6"
       },
       "spreadsheet": {
         "background-normal": "#f8fcf9",
@@ -95,7 +102,14 @@
         "canvas-scroll-arrow-pressed": "#1f8f4e",
         "canvas-scroll-thumb-target": "#1f8f4e",
         "canvas-scroll-thumb-target-hover": "#1f8f4e",
-        "canvas-scroll-thumb-target-pressed": "#1f8f4e"
+        "canvas-scroll-thumb-target-pressed": "#1f8f4e",
+        "canvas-cell-title-border-hover": "#e1f0e6",
+        "canvas-cell-title-border-selected": "#c8e8d3",
+        "canvas-dark-cell-title-hover": "#e1f0e6",
+        "canvas-dark-cell-title-selected": "#c8e8d3",
+        "canvas-dark-cell-title-border-hover": "#e1f0e6",
+        "canvas-dark-cell-title-border-selected": "#c8e8d3",
+        "canvas-select-all-icon": "#1f8f4e"
       },
       "presentation": {
         "background-normal": "#fffaf7",
@@ -141,7 +155,14 @@
         "canvas-scroll-arrow-pressed": "#d0532a",
         "canvas-scroll-thumb-target": "#d0532a",
         "canvas-scroll-thumb-target-hover": "#d0532a",
-        "canvas-scroll-thumb-target-pressed": "#d0532a"
+        "canvas-scroll-thumb-target-pressed": "#d0532a",
+        "canvas-cell-title-border-hover": "#f6e5dc",
+        "canvas-cell-title-border-selected": "#f6d3c2",
+        "canvas-dark-cell-title-hover": "#f6e5dc",
+        "canvas-dark-cell-title-selected": "#f6d3c2",
+        "canvas-dark-cell-title-border-hover": "#f6e5dc",
+        "canvas-dark-cell-title-border-selected": "#f6d3c2",
+        "canvas-select-all-icon": "#d0532a"
       },
       "pdf": {
         "background-normal": "#fff8f8",
@@ -187,7 +208,14 @@
         "canvas-scroll-arrow-pressed": "#c93a3a",
         "canvas-scroll-thumb-target": "#c93a3a",
         "canvas-scroll-thumb-target-hover": "#c93a3a",
-        "canvas-scroll-thumb-target-pressed": "#c93a3a"
+        "canvas-scroll-thumb-target-pressed": "#c93a3a",
+        "canvas-cell-title-border-hover": "#f6e1e1",
+        "canvas-cell-title-border-selected": "#f5cccc",
+        "canvas-dark-cell-title-hover": "#f6e1e1",
+        "canvas-dark-cell-title-selected": "#f5cccc",
+        "canvas-dark-cell-title-border-hover": "#f6e1e1",
+        "canvas-dark-cell-title-border-selected": "#f5cccc",
+        "canvas-select-all-icon": "#c93a3a"
       }
     }
   },
@@ -282,14 +310,14 @@
     "canvas-cell-title-background-hover": "#e3e9f6",
     "canvas-cell-title-background-selected": "#cddcf7",
     "canvas-cell-title-border": "#d5dcea",
-    "canvas-cell-title-border-hover": "#CBCBCB",
-    "canvas-cell-title-border-selected": "#B2B2B2",
+    "canvas-cell-title-border-hover": "#e3e9f6",
+    "canvas-cell-title-border-selected": "#cddcf7",
     "canvas-dark-cell-title": "#686868",
-    "canvas-dark-cell-title-hover": "#949494",
-    "canvas-dark-cell-title-selected": "#383838",
+    "canvas-dark-cell-title-hover": "#e3e9f6",
+    "canvas-dark-cell-title-selected": "#cddcf7",
     "canvas-dark-cell-title-border": "#404040",
-    "canvas-dark-cell-title-border-hover": "#585858",
-    "canvas-dark-cell-title-border-selected": "#222222",
+    "canvas-dark-cell-title-border-hover": "#e3e9f6",
+    "canvas-dark-cell-title-border-selected": "#cddcf7",
     "canvas-scroll-thumb": "#c3cde0",
     "canvas-scroll-thumb-hover": "#cddcf7",
     "canvas-scroll-thumb-pressed": "#cddcf7",
@@ -307,7 +335,7 @@
     "canvas-sheet-view-cell-background-pressed": "#5AEA98",
     "canvas-sheet-view-cell-title-label": "#222222",
     "canvas-sheet-view-select-all-icon": "#00703E",
-    "canvas-select-all-icon": "#949494",
+    "canvas-select-all-icon": "#2f6fd6",
     "background-statusbar": "#eef2fa",
     "background-tab-underline": "#2f6fd6",
     "highlight-toolbar-tab-underline": "#2f6fd6"
