@@ -1,0 +1,42 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install svg converter
+        run: sudo apt-get update && sudo apt-get install -y librsvg2-bin
+
+      # onlyoffice wants png icons at each scale, dark strokes for light mode and white for dark mode
+      - name: build icons
+        run: |
+          iconFolder=plugin/screenshots/icons
+          for themeType in light dark; do
+            strokeColour=$([ "$themeType" = "light" ] && echo "#444444" || echo "#ffffff")
+            mkdir -p "$iconFolder/$themeType"
+            for scale in 1 1.25 1.5 1.75 2; do
+              iconSize=$(awk "BEGIN { print int(40 * $scale) }")
+              iconName=$([ "$scale" = "1" ] && echo "icon.png" || echo "icon@${scale}x.png")
+              sed "s/currentColor/$strokeColour/" "$iconFolder/icon.svg" | rsvg-convert -w "$iconSize" -h "$iconSize" -o "$iconFolder/$themeType/$iconName"
+            done
+          done
+
+      - name: zip plugin
+        run: |
+          cp -r plugin themes-extended
+          rm "${PWD:?}/themes-extended/screenshots/icons/icon.svg"
+          zip -r themes-extended.zip themes-extended
+
+      - name: attach zip to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" themes-extended.zip --clobber
