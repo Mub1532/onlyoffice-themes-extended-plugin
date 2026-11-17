@@ -1,6 +1,13 @@
 const editorWindow = window.parent;
 const editorDocument = editorWindow.document;
 
+const editorTypeNames = {
+  documenteditor: "document",
+  spreadsheeteditor: "spreadsheet",
+  presentationeditor: "presentation",
+  pdfeditor: "pdf",
+};
+
 // custom themes only, built in ones arent in themes.json
 async function getActiveTheme() {
   const versionPath = location.pathname.split("/").filter(Boolean)[0];
@@ -8,6 +15,11 @@ async function getActiveTheme() {
   const { themes } = await themesResponse.json();
 
   return themes?.find(theme => theme.id === editorWindow.uitheme?.id);
+}
+
+function getEditorType() {
+  const editorFolder = Object.keys(editorTypeNames).find(editorName => editorDocument.location.pathname.includes(editorName));
+  return editorTypeNames[editorFolder];
 }
 
 // the class onlyoffice only gives its own modern themes, switches to the modern icons
@@ -40,11 +52,12 @@ async function applyThemesExtended() {
   const themesExtended = activeTheme?.themesExtended;
   if (!themesExtended) return;
 
-  const { modernLayout } = themesExtended;
+  const { modernLayout, editorColors } = themesExtended;
   if (modernLayout) enableModernIcons();
 
   const modernLayoutColours = modernLayout ? modernLayoutConfig[activeTheme.type] : {};
-  writeExtendedColours({ ...modernLayoutColours });
+  const editorColours = editorColors?.[getEditorType()];
+  writeExtendedColours({ ...modernLayoutColours, ...editorColours });
 }
 
 window.Asc.plugin.init = applyThemesExtended;
