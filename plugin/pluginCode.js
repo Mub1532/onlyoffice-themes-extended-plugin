@@ -47,6 +47,33 @@ function writeExtendedColours(extendedColours) {
   extendedStyle.textContent = `:root,body{${colourRules.join(";")}}`;
 }
 
+// onlyoffice only picks the light or dark logo when the theme loads, so redo it with the extended header colour
+function updateLogo() {
+  const { RGBColor } = editorWindow.Common?.Utils ?? {};
+  const headerLogo = editorDocument.getElementById("header-logo");
+  if (!RGBColor || !headerLogo) return;
+
+  const headerColour = editorWindow.getComputedStyle(editorDocument.body).getPropertyValue(`--toolbar-header-${getEditorType()}`).trim();
+  headerLogo.classList.toggle("logo-light", !new RGBColor(headerColour).isDark());
+}
+
+// onlyoffice paints the cached theme before it loads, so the cache needs the extended colours too or it flashes
+function cacheExtendedColours(themeId, extendedColours) {
+  let cachedTheme;
+  try {
+    cachedTheme = JSON.parse(editorWindow.localStorage.getItem("ui-theme"));
+  } catch {
+    return;
+  }
+
+  if (cachedTheme?.id !== themeId) return;
+
+  // icon offsets break the icons until the modern class gets added, so they stay out of the cache
+  const cacheableColours = Object.fromEntries(Object.entries(extendedColours).filter(([colourName]) => !colourName.includes("icon-offset")));
+  const extendedTheme = { ...cachedTheme, colors: { ...cachedTheme.colors, ...cacheableColours } };
+  editorWindow.localStorage.setItem("ui-theme", JSON.stringify(extendedTheme));
+}
+
 // the canvas eg around the page, rulers, sheet headers only gets painted when the theme loads
 function repaintEditor(themeType, themeId) {
   const editorApi = editorWindow.Asc?.editor ?? editorWindow.editor;
@@ -82,6 +109,9 @@ async function applyThemesExtended(theme) {
   // normal theme to normal theme, onlyoffice already painted it
   if (hasExtendedColours || hadExtendedColours) repaintEditor(themeType, themeId);
   hadExtendedColours = hasExtendedColours;
+
+  updateLogo();
+  cacheExtendedColours(themeId, extendedColours);
 }
 
 function switchTheme(theme) {
