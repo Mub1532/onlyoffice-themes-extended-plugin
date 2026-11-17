@@ -3,6 +3,9 @@ const editorDocument = editorWindow.document;
 
 let hadExtendedColours = false;
 
+// marks the css onlyoffice injects from the cache, so it can be removed once the plugin takes over
+const cachedCssMarker = "/* themes-extended */";
+
 const editorTypeNames = {
   documenteditor: "document",
   spreadsheeteditor: "spreadsheet",
@@ -68,15 +71,29 @@ function cacheExtendedColours({ themeId, themeType, themesExtended, extendedColo
 
   if (cachedTheme?.id !== themeId) return;
 
-  const cacheableColours = removeIconOffsets(extendedColours);
-  const skeleton = { ...cachedTheme.skeleton, css: getSkeletonCss(cachedTheme.colors, themesExtended, themeType) };
-  const extendedTheme = { ...cachedTheme, colors: { ...cachedTheme.colors, ...cacheableColours }, skeleton };
+  // older versions cached the layout sizes too, so the cached colours get cleaned as well
+  const themeColours = keepOnlyColours({ ...cachedTheme.colors, ...extendedColours });
+  const skeletonCss = getSkeletonCss(themeColours, themesExtended, themeType);
+  const earlyThemeCss = getEarlyThemeCss(themeId, themeColours);
+  const skeleton = { ...cachedTheme.skeleton, css: `${cachedCssMarker}${skeletonCss}${earlyThemeCss}` };
+  const extendedTheme = { ...cachedTheme, colors: themeColours, skeleton };
   editorWindow.localStorage.setItem("ui-theme", JSON.stringify(extendedTheme));
 }
 
-// icon offsets break the icons until the modern class gets added, so they stay out of the cache
-function removeIconOffsets(themeColours) {
-  return Object.fromEntries(Object.entries(themeColours).filter(([colourName]) => !colourName.includes("icon-offset")));
+// the modern layout sizes and icon offsets break the icons until the modern class gets added, so only actual colours go in the cache
+function keepOnlyColours(themeColours) {
+  return Object.fromEntries(Object.entries(themeColours).filter(([, colourValue]) => /^(#|rgba?\()/.test(colourValue)));
+}
+
+// onlyoffices own dark theme css loads after the cached colours and wins, so the cached ones need !important until the plugin runs
+function getEarlyThemeCss(themeId, themeColours) {
+  const colourRules = Object.entries(themeColours).map(([colourName, colourValue]) => `--${colourName}:${colourValue} !important`);
+  return `.${themeId}{${colourRules.join(";")}}`;
+}
+
+function removeCachedCss() {
+  const cachedStyles = [...editorDocument.querySelectorAll("style")].filter(style => style.textContent.startsWith(cachedCssMarker));
+  cachedStyles.forEach(style => style.remove());
 }
 
 // the loading screen before the editor loads, onlyoffice reads this css from the cache, one rule per editor so each gets its own colours
@@ -132,6 +149,8 @@ async function applyThemesExtended(theme) {
   hadExtendedColours = hasExtendedColours;
 
   updateLogo();
+
+  removeCachedCss();
   cacheExtendedColours({ themeId, themeType, themesExtended, extendedColours });
 }
 
