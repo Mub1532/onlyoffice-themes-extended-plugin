@@ -58,9 +58,8 @@ function repaintEditor(themeType, themeId) {
 }
 
 async function applyThemesExtended(theme) {
-  window.Asc.plugin.onThemeChangedBase(theme);
-
-  const themeId = theme?.name ?? editorWindow.uitheme?.id;
+  // theme.name isnt the theme id, the editor itself has the real one
+  const themeId = editorWindow.uitheme?.id ?? editorWindow.localStorage.getItem("ui-theme-id");
   let customTheme;
   try {
     customTheme = await getCustomTheme(themeId);
@@ -73,7 +72,7 @@ async function applyThemesExtended(theme) {
   const isModern = themesExtended?.modernLayout || builtInModernThemes.includes(themeId);
   setModernIcons(Boolean(isModern));
 
-  const themeType = customTheme?.type ?? theme?.type;
+  const themeType = customTheme?.type ?? theme?.type ?? editorWindow.uitheme?.type;
   const modernLayoutColours = themesExtended?.modernLayout ? modernLayoutConfig[themeType] : {};
   const editorColours = themesExtended?.editorColors?.[getEditorType()];
   const extendedColours = { ...modernLayoutColours, ...editorColours };
@@ -85,7 +84,11 @@ async function applyThemesExtended(theme) {
   hadExtendedColours = hasExtendedColours;
 }
 
-// fires when the plugin loads and every time the theme gets switched
-window.Asc.plugin.onThemeChanged = applyThemesExtended;
-window.Asc.plugin.init = () => {};
+function switchTheme(theme) {
+  window.Asc.plugin.onThemeChangedBase(theme);
+  applyThemesExtended(theme);
+}
+
+window.Asc.plugin.onThemeChanged = switchTheme;
+window.Asc.plugin.init = () => applyThemesExtended();
 window.Asc.plugin.button = () => {};
