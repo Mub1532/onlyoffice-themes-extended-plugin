@@ -41,7 +41,15 @@
         "background-tab-underline": "#2f6fd6",
         "highlight-toolbar-tab-underline": "#2f6fd6",
         "highlight-header-tab-underline-document": "#2f6fd6",
-        "highlight-toolbar-tab-underline-document": "#2f6fd6"
+        "highlight-toolbar-tab-underline-document": "#2f6fd6",
+        "canvas-scroll-thumb-pressed": "#cddcf7",
+        "canvas-scroll-thumb-border-hover": "#cddcf7",
+        "canvas-scroll-thumb-border-pressed": "#cddcf7",
+        "canvas-scroll-arrow-hover": "#cddcf7",
+        "canvas-scroll-arrow-pressed": "#2f6fd6",
+        "canvas-scroll-thumb-target": "#2f6fd6",
+        "canvas-scroll-thumb-target-hover": "#2f6fd6",
+        "canvas-scroll-thumb-target-pressed": "#2f6fd6"
       },
       "spreadsheet": {
         "background-normal": "#f8fcf9",
@@ -79,7 +87,15 @@
         "background-tab-underline": "#1f8f4e",
         "highlight-toolbar-tab-underline": "#1f8f4e",
         "highlight-header-tab-underline-spreadsheet": "#1f8f4e",
-        "highlight-toolbar-tab-underline-spreadsheet": "#1f8f4e"
+        "highlight-toolbar-tab-underline-spreadsheet": "#1f8f4e",
+        "canvas-scroll-thumb-pressed": "#c8e8d3",
+        "canvas-scroll-thumb-border-hover": "#c8e8d3",
+        "canvas-scroll-thumb-border-pressed": "#c8e8d3",
+        "canvas-scroll-arrow-hover": "#c8e8d3",
+        "canvas-scroll-arrow-pressed": "#1f8f4e",
+        "canvas-scroll-thumb-target": "#1f8f4e",
+        "canvas-scroll-thumb-target-hover": "#1f8f4e",
+        "canvas-scroll-thumb-target-pressed": "#1f8f4e"
       },
       "presentation": {
         "background-normal": "#fffaf7",
@@ -117,7 +133,15 @@
         "background-tab-underline": "#d0532a",
         "highlight-toolbar-tab-underline": "#d0532a",
         "highlight-header-tab-underline-presentation": "#d0532a",
-        "highlight-toolbar-tab-underline-presentation": "#d0532a"
+        "highlight-toolbar-tab-underline-presentation": "#d0532a",
+        "canvas-scroll-thumb-pressed": "#f6d3c2",
+        "canvas-scroll-thumb-border-hover": "#f6d3c2",
+        "canvas-scroll-thumb-border-pressed": "#f6d3c2",
+        "canvas-scroll-arrow-hover": "#f6d3c2",
+        "canvas-scroll-arrow-pressed": "#d0532a",
+        "canvas-scroll-thumb-target": "#d0532a",
+        "canvas-scroll-thumb-target-hover": "#d0532a",
+        "canvas-scroll-thumb-target-pressed": "#d0532a"
       },
       "pdf": {
         "background-normal": "#fff8f8",
@@ -155,7 +179,15 @@
         "background-tab-underline": "#c93a3a",
         "highlight-toolbar-tab-underline": "#c93a3a",
         "highlight-header-tab-underline-pdf": "#c93a3a",
-        "highlight-toolbar-tab-underline-pdf": "#c93a3a"
+        "highlight-toolbar-tab-underline-pdf": "#c93a3a",
+        "canvas-scroll-thumb-pressed": "#f5cccc",
+        "canvas-scroll-thumb-border-hover": "#f5cccc",
+        "canvas-scroll-thumb-border-pressed": "#f5cccc",
+        "canvas-scroll-arrow-hover": "#f5cccc",
+        "canvas-scroll-arrow-pressed": "#c93a3a",
+        "canvas-scroll-thumb-target": "#c93a3a",
+        "canvas-scroll-thumb-target-hover": "#c93a3a",
+        "canvas-scroll-thumb-target-pressed": "#c93a3a"
       }
     }
   },
@@ -260,16 +292,16 @@
     "canvas-dark-cell-title-border-selected": "#222222",
     "canvas-scroll-thumb": "#c3cde0",
     "canvas-scroll-thumb-hover": "#cddcf7",
-    "canvas-scroll-thumb-pressed": "#E1E1E1",
+    "canvas-scroll-thumb-pressed": "#cddcf7",
     "canvas-scroll-thumb-border": "#c3cde0",
-    "canvas-scroll-thumb-border-hover": "#B2B2B2",
-    "canvas-scroll-thumb-border-pressed": "#949494",
+    "canvas-scroll-thumb-border-hover": "#cddcf7",
+    "canvas-scroll-thumb-border-pressed": "#cddcf7",
     "canvas-scroll-arrow": "#c3cde0",
-    "canvas-scroll-arrow-hover": "#767676",
-    "canvas-scroll-arrow-pressed": "#686868",
-    "canvas-scroll-thumb-target": "#949494",
-    "canvas-scroll-thumb-target-hover": "#767676",
-    "canvas-scroll-thumb-target-pressed": "#686868",
+    "canvas-scroll-arrow-hover": "#cddcf7",
+    "canvas-scroll-arrow-pressed": "#2f6fd6",
+    "canvas-scroll-thumb-target": "#2f6fd6",
+    "canvas-scroll-thumb-target-hover": "#2f6fd6",
+    "canvas-scroll-thumb-target-pressed": "#2f6fd6",
     "canvas-sheet-view-cell-background": "#00AB62",
     "canvas-sheet-view-cell-background-hover": "#38D080",
     "canvas-sheet-view-cell-background-pressed": "#5AEA98",
