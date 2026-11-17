@@ -58,7 +58,7 @@ function updateLogo() {
 }
 
 // onlyoffice paints the cached theme before it loads, so the cache needs the extended colours too or it flashes
-function cacheExtendedColours(themeId, extendedColours) {
+function cacheExtendedColours({ themeId, themeType, themesExtended, extendedColours }) {
   let cachedTheme;
   try {
     cachedTheme = JSON.parse(editorWindow.localStorage.getItem("ui-theme"));
@@ -68,10 +68,31 @@ function cacheExtendedColours(themeId, extendedColours) {
 
   if (cachedTheme?.id !== themeId) return;
 
-  // icon offsets break the icons until the modern class gets added, so they stay out of the cache
-  const cacheableColours = Object.fromEntries(Object.entries(extendedColours).filter(([colourName]) => !colourName.includes("icon-offset")));
-  const extendedTheme = { ...cachedTheme, colors: { ...cachedTheme.colors, ...cacheableColours } };
+  const cacheableColours = removeIconOffsets(extendedColours);
+  const skeleton = { ...cachedTheme.skeleton, css: getSkeletonCss(cachedTheme.colors, themesExtended, themeType) };
+  const extendedTheme = { ...cachedTheme, colors: { ...cachedTheme.colors, ...cacheableColours }, skeleton };
   editorWindow.localStorage.setItem("ui-theme", JSON.stringify(extendedTheme));
+}
+
+// icon offsets break the icons until the modern class gets added, so they stay out of the cache
+function removeIconOffsets(themeColours) {
+  return Object.fromEntries(Object.entries(themeColours).filter(([colourName]) => !colourName.includes("icon-offset")));
+}
+
+// the loading screen before the editor loads, onlyoffice reads this css from the cache, one rule per editor so each gets its own colours
+function getSkeletonCss(baseColours, themesExtended, themeType) {
+  const modernLayoutColours = themesExtended?.modernLayout ? modernLayoutConfig[themeType] : {};
+
+  return Object.entries(skeletonEditorSelectors).map(([editorType, skeletonSelector]) => {
+    const themeColours = { ...baseColours, ...modernLayoutColours, ...themesExtended?.editorColors?.[editorType] };
+    const skeletonColours = { ...skeletonColourConfig, "sk-background-toolbar": `toolbar-header-${editorType}` };
+
+    const skeletonRules = Object.entries(skeletonColours)
+      .filter(([, themeColourName]) => themeColours[themeColourName])
+      .map(([skeletonColourName, themeColourName]) => `--${skeletonColourName}:${themeColours[themeColourName]} !important`);
+
+    return `${skeletonSelector}{${skeletonRules.join(";")}}`;
+  }).join("");
 }
 
 // the canvas eg around the page, rulers, sheet headers only gets painted when the theme loads
@@ -111,7 +132,7 @@ async function applyThemesExtended(theme) {
   hadExtendedColours = hasExtendedColours;
 
   updateLogo();
-  cacheExtendedColours(themeId, extendedColours);
+  cacheExtendedColours({ themeId, themeType, themesExtended, extendedColours });
 }
 
 function switchTheme(theme) {
