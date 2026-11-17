@@ -1,6 +1,8 @@
 const editorWindow = window.parent;
 const editorDocument = editorWindow.document;
 
+let hadExtendedColours = false;
+
 const editorTypeNames = {
   documenteditor: "document",
   spreadsheeteditor: "spreadsheet",
@@ -9,12 +11,12 @@ const editorTypeNames = {
 };
 
 // custom themes only, built in ones arent in themes.json
-async function getActiveTheme() {
+async function getCustomTheme(themeId) {
   const versionPath = location.pathname.split("/").filter(Boolean)[0];
   const themesResponse = await fetch(`${location.origin}/${versionPath}/themes.json`);
   const { themes } = await themesResponse.json();
 
-  return themes?.find(theme => theme.id === editorWindow.uitheme?.id);
+  return themes?.find(theme => theme.id === themeId);
 }
 
 function getEditorType() {
@@ -23,13 +25,18 @@ function getEditorType() {
 }
 
 // the class onlyoffice only gives its own modern themes, switches to the modern icons
-function enableModernIcons() {
-  editorDocument.documentElement.classList.add("theme-icons-cls-mod2");
-  editorDocument.body.classList.add("theme-icons-cls-mod2");
+function setModernIcons(isModern) {
+  editorDocument.documentElement.classList.toggle("theme-icons-cls-mod2", isModern);
+  editorDocument.body.classList.toggle("theme-icons-cls-mod2", isModern);
 }
 
 function writeExtendedColours(extendedColours) {
   let extendedStyle = editorDocument.getElementById("themes-extended");
+  if (!Object.keys(extendedColours).length) {
+    extendedStyle?.remove();
+    return;
+  }
+
   if (!extendedStyle) {
     extendedStyle = editorDocument.createElement("style");
     extendedStyle.id = "themes-extended";
@@ -50,26 +57,35 @@ function repaintEditor(themeType, themeId) {
   editorWindow.dispatchEvent(new Event("resize"));
 }
 
-async function applyThemesExtended() {
-  let activeTheme;
+async function applyThemesExtended(theme) {
+  window.Asc.plugin.onThemeChangedBase(theme);
+
+  const themeId = theme?.name ?? editorWindow.uitheme?.id;
+  let customTheme;
   try {
-    activeTheme = await getActiveTheme();
+    customTheme = await getCustomTheme(themeId);
   } catch (error) {
     console.error("couldnt read themes.json", error);
     return;
   }
 
-  const themesExtended = activeTheme?.themesExtended;
-  if (!themesExtended) return;
+  const themesExtended = customTheme?.themesExtended;
+  const isModern = themesExtended?.modernLayout || builtInModernThemes.includes(themeId);
+  setModernIcons(Boolean(isModern));
 
-  const { modernLayout, editorColors } = themesExtended;
-  if (modernLayout) enableModernIcons();
+  const themeType = customTheme?.type ?? theme?.type;
+  const modernLayoutColours = themesExtended?.modernLayout ? modernLayoutConfig[themeType] : {};
+  const editorColours = themesExtended?.editorColors?.[getEditorType()];
+  const extendedColours = { ...modernLayoutColours, ...editorColours };
+  const hasExtendedColours = Boolean(Object.keys(extendedColours).length);
+  writeExtendedColours(extendedColours);
 
-  const modernLayoutColours = modernLayout ? modernLayoutConfig[activeTheme.type] : {};
-  const editorColours = editorColors?.[getEditorType()];
-  writeExtendedColours({ ...modernLayoutColours, ...editorColours });
-  repaintEditor(activeTheme.type, activeTheme.id);
+  // normal theme to normal theme, onlyoffice already painted it
+  if (hasExtendedColours || hadExtendedColours) repaintEditor(themeType, themeId);
+  hadExtendedColours = hasExtendedColours;
 }
 
-window.Asc.plugin.init = applyThemesExtended;
+// fires when the plugin loads and every time the theme gets switched
+window.Asc.plugin.onThemeChanged = applyThemesExtended;
+window.Asc.plugin.init = () => {};
 window.Asc.plugin.button = () => {};

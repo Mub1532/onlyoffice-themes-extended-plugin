@@ -1,3 +1,6 @@
+// onlyoffice's own modern themes, they already use the modern icons
+const builtInModernThemes = ["theme-white", "theme-night"];
+
 // layout values copied from onlyoffice's own modern night (dark) and white (light) themes
 const modernLayoutConfig = {
   "dark": {
