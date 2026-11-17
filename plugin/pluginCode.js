@@ -40,6 +40,16 @@ function writeExtendedColours(extendedColours) {
   extendedStyle.textContent = `:root,body{${colourRules.join(";")}}`;
 }
 
+// the canvas eg around the page, rulers, sheet headers only gets painted when the theme loads
+function repaintEditor(themeType, themeId) {
+  const editorApi = editorWindow.Asc?.editor ?? editorWindow.editor;
+  const editorStyle = editorWindow.getComputedStyle(editorDocument.body);
+  const skinColours = Object.fromEntries(skinColourConfig.map(colourName => [colourName, editorStyle.getPropertyValue(`--${colourName}`).trim()]));
+
+  editorApi?.asc_setSkin({ ...skinColours, type: themeType, name: themeId });
+  editorWindow.dispatchEvent(new Event("resize"));
+}
+
 async function applyThemesExtended() {
   let activeTheme;
   try {
@@ -58,6 +68,7 @@ async function applyThemesExtended() {
   const modernLayoutColours = modernLayout ? modernLayoutConfig[activeTheme.type] : {};
   const editorColours = editorColors?.[getEditorType()];
   writeExtendedColours({ ...modernLayoutColours, ...editorColours });
+  repaintEditor(activeTheme.type, activeTheme.id);
 }
 
 window.Asc.plugin.init = applyThemesExtended;
