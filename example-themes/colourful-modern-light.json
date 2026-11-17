@@ -338,6 +338,7 @@
     "canvas-select-all-icon": "#2f6fd6",
     "background-statusbar": "#eef2fa",
     "background-tab-underline": "#2f6fd6",
-    "highlight-toolbar-tab-underline": "#2f6fd6"
+    "highlight-toolbar-tab-underline": "#2f6fd6",
+    "toolbar-height-controls": "84px"
   }
 }

@@ -365,6 +365,7 @@
     "canvas-dark-cell-title-hover": "#131b2c",
     "canvas-dark-cell-title-selected": "#1c3a7a",
     "canvas-dark-cell-title-border-hover": "#131b2c",
-    "canvas-dark-cell-title-border-selected": "#1c3a7a"
+    "canvas-dark-cell-title-border-selected": "#1c3a7a",
+    "toolbar-height-controls": "84px"
   }
 }
